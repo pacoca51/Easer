@@ -46,7 +46,8 @@ install:
 before_script:
     #  - echo no | avdmanager create avd -n test -k android-${EMULATOR_API} -f --abi ${ABI} --tag "$TAG"
   - echo no | android create avd --force -n test -t android-${EMULATOR_API} --abi ${ABI} # avdmanager is not available (?) (see https://github.com/travis-ci/packer-templates/issues/482 )
-  - emulator -avd test -no-audio -no-window &
+    #  - emulator -avd test -no-audio -no-window & # Doesn't work anymore, according to https://github.com/travis-ci/travis-ci/issues/8188#issuecomment-336690553
+  - QEMU_AUDIO_DRV=none emulator -avd test -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
 
