@@ -49,15 +49,17 @@ class EaserStatusWidget : AppWidgetProvider() {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
-        if (ACTION_CLICK == intent?.action || EHService.ACTION_STATE_CHANGED == intent?.action) {
-            val views = createViews(context)
-            AppWidgetManager.getInstance(context)
-                    .updateAppWidget(ComponentName(context, EaserStatusWidget::class.java), views)
-        } else {
-            super.onReceive(context, intent)
-        }
-    }
+    override fun onReceive(context: Context?, intent: Intent?) =
+            if (ACTION_CLICK == intent?.action || EHService.ACTION_STATE_CHANGED == intent?.action) {
+                val views = createViews(context)
+                AppWidgetManager.getInstance(context)
+                        .updateAppWidget(ComponentName(
+                                context!!,
+                                EaserStatusWidget::class.java
+                        ), views)
+            } else {
+                super.onReceive(context, intent)
+            }
 
     companion object {
 

@@ -65,7 +65,7 @@ class ScriptSatisfactionLog : BasicLog {
     }
 
     protected constructor(parcel: Parcel): super(parcel) {
-        scriptName = parcel.readString()
+        scriptName = parcel.readString()!!
         satisfaction = parcel.readByte() > 0
         profileName = parcel.readString()
     }

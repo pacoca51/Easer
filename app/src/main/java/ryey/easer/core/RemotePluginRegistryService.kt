@@ -128,7 +128,7 @@ class RemotePluginRegistryService : Service() {
                 val id = message.data.getString(C.EXTRA_PLUGIN_ID)
                 val reply = Message.obtain()
                 reply.what = C.MSG_FIND_PLUGIN_RESPONSE
-                reply.data.putParcelable(C.EXTRA_PLUGIN_INFO, service.infoForId(id))
+                reply.data.putParcelable(C.EXTRA_PLUGIN_INFO, service.infoForId(id!!))
                 rMessenger.send(reply)
             } else if (message.what == C.MSG_CURRENT_OPERATION_PLUGIN_LIST) {
                 val reply = Message.obtain()
@@ -139,7 +139,7 @@ class RemotePluginRegistryService : Service() {
                 throw IllegalAccessError("This message is not yet in use")
                 Logger.d("[RemotePluginRegistryService] MSG_PARSE_OPERATION_DATA")
                 val id = message.data.getString(C.EXTRA_PLUGIN_ID)
-                val pluginInfo = service.infoForId(id)
+                val pluginInfo = service.infoForId(id!!)
                 val reply = Message.obtain()
                 reply.what = C.MSG_PARSE_OPERATION_DATA_RESPONSE
                 if (pluginInfo == null) {
@@ -174,15 +174,15 @@ class RemotePluginRegistryService : Service() {
                 message.data.classLoader = String::class.java.classLoader
                 val id = message.data.getString(C.EXTRA_PLUGIN_ID)
                 message.data.classLoader = RemoteOperationData::class.java.classLoader
-                val data: RemoteOperationData = message.data.getParcelable(C.EXTRA_PLUGIN_DATA)
-                val pluginInfo = service.infoForId(id)!!
+                val data: RemoteOperationData = message.data.getParcelable(C.EXTRA_PLUGIN_DATA)!!
+                val pluginInfo = service.infoForId(id!!)!!
                 val intent = Intent(RemotePlugin.OperationPlugin.ACTION_TRIGGER)
                 intent.`package` = pluginInfo.packageName
                 intent.putExtra(RemotePlugin.EXTRA_DATA, data)
                 service.sendBroadcast(intent)
             } else if (message.what == C.MSG_EDIT_OPERATION_DATA) {
                 val id = message.data.getString(C.EXTRA_PLUGIN_ID)
-                val pluginInfo = service.infoForId(id)!!
+                val pluginInfo = service.infoForId(id!!)!!
                 val bundle = Bundle()
                 bundle.putString(C.EXTRA_PLUGIN_PACKAGE, pluginInfo.packageName)
                 bundle.putString(C.EXTRA_PLUGIN_EDIT_DATA_ACTIVITY, pluginInfo.activityEditData)
